@@ -13,6 +13,7 @@
 			// Web resources may change/disappear. Substitute as needed.
 			// https://dog.ceo/dog-api/
 			// discovered via https://publicapis.dev/search?q=dogs
+			// new dog image each time page is loaded
 			getResponse(
 				'https://api.thecatapi.com/v1/images/search', 
 				(response) => $('.randomCatImage').attr('src', response[0].url)
