@@ -5,8 +5,8 @@
 	<BODY>	
 		<div onclick="loadBoard();" id='gamebox' tabindex='0' style='position:relative;'>
 				<div style='z-index:-1; position:absolute;'>
-					<B>Classic Tron Game</B>
-					<p>Try not to run into things while trying to make the other player run into things.</p>
+					<B>Neon Tron Challenge</B>
+					<p>Move quickly, avoid the walls, and trap the other player.</p>					
 					<p>Player 1 keys: 'a' and 'd'
 					<br/>Player 2 keys: '<-' and '->'</p><p>Click in this box to start.</p></div>
 		<canvas id='drawingArea' width=100 height=100 style='width:180px;height:180px;'>
@@ -99,7 +99,7 @@
 							setPixel(imageData, i, j, 255, 0, 0);
 						} else {
 							// If it's blank, color it grey.
-							setPixel(imageData, i, j, 50, 50, 50);
+							setPixel(imageData, i, j, 10, 10, 10);
 						}
 					}
 				}
@@ -118,7 +118,7 @@
 					$('#gamebox').focus();
 				}
 				// Start a new timer.
-				intervalId = setInterval('updateLocations()', 50);
+				intervalId = setInterval('updateLocations()', 35);
 			}
 
 			// Update the locations of the players based on their current directions.
@@ -163,7 +163,7 @@
 				// Create an image data array for a single pixel.
 				imageData = context.createImageData(1, 1);
 				// Set that single pixel to be green.				
-				setPixel(imageData, 0, 0, 0, 255, 0);
+				setPixel(imageData, 0, 0, 255, 140, 0);
 				// Commit the change by writing single pixel to the board at the current position of the player.
 				context.putImageData(imageData, player1X, player1Y);
 
@@ -172,7 +172,7 @@
 				// Create an image data array for a single pixel.
 				imageData = context.createImageData(1, 1);
 				// Set that single pixel to be blue.
-				setPixel(imageData, 0, 0, 0, 0, 255);
+				setPixel(imageData, 0, 0, 0, 255, 255);
 				// Commit the change by writing single pixel to the board at the current position of the player.
 				context.putImageData(imageData, player2X, player2Y);
 			}
