@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+		<script src="../js/utils.js"></script>
+		<style>
+			body { font-family: Arial, sans-serif; text-align: center; margin-top: 40px; }
+			#statusResult { margin-top: 16px; font-size: 24px; font-weight: bold; }
+		</style>
+		<script>
+			function checkServerStatus() {
+				var server = $('#serverSelect').val();
+				var resultBox = $('#statusResult');
+
+				resultBox.text('Checking...');
+				resultBox.css('color', '#666');
+
+				getResponse('https://api.mcsrvstat.us/3/' + encodeURIComponent(server), function(response) {
+					if (response && response.online) {
+						resultBox.text('Online');
+						resultBox.css('color', 'green');
+					} else {
+						resultBox.text('Offline');
+						resultBox.css('color', 'red');
+					}
+				}).fail(function() {
+					resultBox.text('Unable to check status');
+					resultBox.css('color', '#b22222');
+				});
+			}
+		</script>
+	</head>
+	<body>
+		<form style='text-align:center;'>
+			<p><b>Minecraft Server Status</b></p>
+			<select id='serverSelect' onchange='checkServerStatus();'>
+				<option value='play.hypixel.net'>Hypixel</option>
+				<option value='play.cubecraft.net'>CubeCraft</option>
+				<option value='us.mineplex.com'>Mineplex</option>
+			</select>
+			<div id='statusResult'>Checking...</div>
+		</form>
+		<script>
+			checkServerStatus();
+		</script>
+	</body>
+</html>
