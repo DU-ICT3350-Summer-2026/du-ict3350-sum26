@@ -1,34 +1,19 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-		<script src="../js/utils.js"></script>
 		<style>
-			body { font-family: Arial, sans-serif; text-align: center; margin-top: 40px; }
-			#statusResult { margin-top: 16px; font-size: 24px; font-weight: bold; }
-		</style>
-		<script>
-			function checkServerStatus() {
-				var server = $('#serverSelect').val();
-				var resultBox = $('#statusResult');
-
-				resultBox.text('Checking...');
-				resultBox.css('color', '#666');
-
-				getResponse('https://api.mcsrvstat.us/3/' + encodeURIComponent(server), function(response) {
-					if (response && response.online) {
-						resultBox.text('Online');
-						resultBox.css('color', 'green');
-					} else {
-						resultBox.text('Offline');
-						resultBox.css('color', 'red');
-					}
-				}).fail(function() {
-					resultBox.text('Unable to check status');
-					resultBox.css('color', '#b22222');
-				});
+			body {
+				font-family: Arial, sans-serif;
+				text-align: center;
+				margin: 20px 10px;
+				box-sizing: border-box;
 			}
-		</script>
+			#statusResult {
+				margin-top: 16px;
+				font-size: 24px;
+				font-weight: bold;
+			}
+		</style>
 	</head>
 	<body>
 		<form style='text-align:center;'>
@@ -40,7 +25,34 @@
 			</select>
 			<div id='statusResult'>Checking...</div>
 		</form>
+
 		<script>
+			function checkServerStatus() {
+				var server = document.getElementById('serverSelect').value;
+				var resultBox = document.getElementById('statusResult');
+
+				resultBox.textContent = 'Checking...';
+				resultBox.style.color = '#666';
+
+				fetch('https://api.mcsrvstat.us/3/' + encodeURIComponent(server))
+					.then(function(response) {
+						return response.json();
+					})
+					.then(function(data) {
+						if (data && data.online) {
+							resultBox.textContent = 'Online';
+							resultBox.style.color = 'green';
+						} else {
+							resultBox.textContent = 'Offline';
+							resultBox.style.color = 'red';
+						}
+					})
+					.catch(function() {
+						resultBox.textContent = 'Unable to check status';
+						resultBox.style.color = '#b22222';
+					});
+			}
+
 			checkServerStatus();
 		</script>
 	</body>
