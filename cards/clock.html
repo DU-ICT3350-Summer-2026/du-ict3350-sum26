@@ -21,7 +21,7 @@
 			}
 			.numberText {
 				position: absolute;
-				color: blue;
+				color: rgb(0, 255, 8);
 				font-weight: bold;
 				font-size: 24px;
 			}
@@ -42,22 +42,22 @@
 				left: 5px;
 			}
 			.hourArm {
-				width: 5px;
+				width: 3px;
 				height: 50px;
 				position:absolute;
 				top: 40px;
 				left: 90px;
-				background-color: red;
+				background-color: black;
 				transform-origin: bottom;
 				transform: rotate(0deg);
 			}
 			.minuteArm {
-				width: 3px;
+				width: 2px;
 				height: 70px;
 				position:absolute;
 				top: 20px;
 				left: 90px;
-				background-color: red;
+				background-color: black;
 				transform-origin: bottom;
 				transform: rotate(0deg);
 			}
@@ -70,6 +70,15 @@
 				background-color: black;
 				transform-origin: bottom;
 				transform: rotate(0deg);
+			}
+			.digitalReadout {
+				width: 180px;
+				text-align: center;
+				margin-top: 10px;
+				font-family: monospace;
+				font-size: 20px;
+				font-weight: bold;
+				color: black;
 			}
 		</style>
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -85,6 +94,7 @@
 			<div class="numberText six">6</div>
 			<div class="numberText nine">9</div>
 		</div>
+		<div class="digitalReadout" id="digitalTime"></div>
 
 		<script>
 			function tick() {
@@ -97,10 +107,14 @@
 				$('.minuteArm').css('transform', 'rotate(' + (360 * minutes / 60) + 'deg)');
 				$('.hourArm').css('transform', 'rotate(' + (360 * hours / 12) + 'deg)');
 
-				console.log(seconds + ' seconds');
+				var displayHours = String(hours).padStart(2, '0');
+				var displayMinutes = String(minutes).padStart(2, '0');
+				var displaySeconds = String(seconds).padStart(2, '0');
+				$('#digitalTime').text(displayHours + ':' + displayMinutes + ':' + displaySeconds);
 			}
 			// Update arm angles every second (1 second).
 			setInterval(tick, 1000);
+			tick();
 		</script>
 	</BODY>
 </HTML>
