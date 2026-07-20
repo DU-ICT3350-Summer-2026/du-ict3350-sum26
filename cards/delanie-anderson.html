@@ -1,10 +1,59 @@
-<HTML>
-	<HEAD>
-	
-		
-	</HEAD>
-	<BODY>
-		<h1 style="text-align:center;">Delanie Anderson</h1>
-		<p style="text-align:center;">This is a placeholder card for Delanie.</p>
-	</BODY>
-</HTML>
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				text-align: center;
+				margin: 20px 10px;
+				box-sizing: border-box;
+			}
+			#statusResult {
+				margin-top: 16px;
+				font-size: 24px;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<form style='text-align:center;'>
+			<p><b>Minecraft Server Status</b></p>
+			<select id='serverSelect' onchange='checkServerStatus();'>
+				<option value='play.hypixel.net'>Hypixel</option>
+				<option value='play.cubecraft.net'>CubeCraft</option>
+				<option value='us.mineplex.com'>Mineplex</option>
+			</select>
+			<div id='statusResult'>Checking...</div>
+		</form>
+
+		<script>
+			function checkServerStatus() {
+				var server = document.getElementById('serverSelect').value;
+				var resultBox = document.getElementById('statusResult');
+
+				resultBox.textContent = 'Checking...';
+				resultBox.style.color = '#666';
+
+				fetch('https://api.mcsrvstat.us/3/' + encodeURIComponent(server))
+					.then(function(response) {
+						return response.json();
+					})
+					.then(function(data) {
+						if (data && data.online) {
+							resultBox.textContent = 'Online';
+							resultBox.style.color = 'green';
+						} else {
+							resultBox.textContent = 'Offline';
+							resultBox.style.color = 'red';
+						}
+					})
+					.catch(function() {
+						resultBox.textContent = 'Unable to check status';
+						resultBox.style.color = '#b22222';
+					});
+			}
+
+			checkServerStatus();
+		</script>
+	</body>
+</html>
