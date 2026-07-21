@@ -4,7 +4,7 @@
 		<script src="../js/utils.js"></script>
 		
 		<style>
-			.randomCatImage {
+			.randomDogImage {
 				width: 180px;
 				height: 180px;
 			}
@@ -14,12 +14,12 @@
 			// https://dog.ceo/dog-api/
 			// discovered via https://publicapis.dev/search?q=dogs
 			getResponse(
-				'https://api.thecatapi.com/v1/images/search', 
-				(response) => $('.randomCatImage').attr('src', response[0].url)
+				'https://api.thedogapi.com/v1/images/search', 
+				(response) => $('.randomDogImage').attr('src', response[0].url)
 			);
 		</script>
 	</HEAD>
 	<BODY>
-		<img class='randomCatImage' />
+		<img class='randomDogImage' />
 	</BODY>
 </HTML>
