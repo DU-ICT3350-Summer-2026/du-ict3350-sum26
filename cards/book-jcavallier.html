@@ -17,7 +17,7 @@
 
         .container {
             background-color: #121212;
-            width: 360px;
+            width: 500px;
             padding: 30px 20px;
             border-radius: 10px;
             display: flex;
@@ -87,9 +87,14 @@
             overflow-y: auto;
             color: #222;
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.2;
             box-sizing: border-box;
             white-space: pre-wrap;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
         }
 
         /* Custom Scrollbar styled to match the dark blue UI marker */
@@ -108,8 +113,11 @@
         .entry {
             margin-bottom: 18px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 2px solid #ccc;
             word-wrap: break-word;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .cover-image {
@@ -144,7 +152,7 @@
         </div>
 
         <!-- Dynamic Output Scroll Box -->
-        <div id="resultsBox" class="results-box">Use the inputs above to query Open Library or parse quotes.</div>
+        <div id="resultsBox" class="results-box">Enter a book title.</div>
     </div>
 
     <script>
