@@ -7,9 +7,9 @@
   <title>Countdown Timer</title>
   <style>
     body {
-      background-color: #111;
+      background-color: white;
       color: #fff;
-      font-family: Arial, sans-serif;
+      font-family: 'Courier New', Courier, monospace;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -24,34 +24,41 @@
       text-align: center;
       padding: 15px;
     }
+	.timer-card h2 {
+		font-size: 20px;
+		margin: 10px;
+	}
     .input-row {
       display: flex;
       justify-content: center;
       gap: 5px;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
     input {
       width: 50px;
-      padding: 4px;
+      padding: 8px;
       border-radius: 6px;
       border: none;
       text-align: center;
-      font-size: 12px;
+      font-size: 20px;
     }
     .label-row {
       display: flex;
       justify-content: center;
       gap: 20px;
-      font-size: 10px;
+      font-size: 12px;
       margin-bottom: 8px;
     }
+	#display {
+		font-size: 20px;
+	}
     button {
       border: none;
       padding: 6px 10px;
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
-      margin: 3px;
+      margin: 8px;
 	  font-size: 12px;
     }
     .start { background-color: limegreen; }
