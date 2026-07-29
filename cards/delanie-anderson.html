@@ -4,35 +4,97 @@
 		<style>
 			body {
 				font-family: Arial, sans-serif;
-				text-align: center;
-				margin: 20px 10px;
+				margin: 0;
+				padding: 8px 8px 22px;
 				box-sizing: border-box;
+				overflow: hidden;
+				position: relative;
+			}
+			.card-body {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 8px;
+				padding-bottom: 16px;
+			}
+			#mainTitle {
+				font-size: 18px;
+				font-weight: bold;
+				text-align: center;
+				margin: 4px 0 0;
+			}
+			.row {
+				display: flex;
+				align-items: center;
+				width: 100%;
+				gap: 6px;
+			}
+			.label {
+				font-weight: 700;
+				font-size: 12px;
+				min-width: 62px;
+				text-align: left;
+			}
+			.value {
+				font-size: 12px;
+				flex: 1;
+				text-align: left;
+			}
+			select {
+				font-size: 12px;
+				width: 100%;
 			}
 			#statusResult {
-				margin-top: 16px;
-				font-size: 24px;
 				font-weight: bold;
+			}
+			#timestamp {
+				position: absolute;
+				bottom: 4px;
+				left: 0;
+				right: 0;
+				text-align: center;
+				font-size: 10px;
+				color: #555;
 			}
 		</style>
 	</head>
 	<body>
-		<form style='text-align:center;'>
-			<p><b>Minecraft Server Status</b></p>
-			<select id='serverSelect' onchange='checkServerStatus();'>
-				<option value='play.hypixel.net'>Hypixel</option>
-				<option value='play.cubecraft.net'>CubeCraft</option>
-				<option value='us.mineplex.com'>Mineplex</option>
-			</select>
-			<div id='statusResult'>Checking...</div>
-		</form>
+		<div class='card-body'>
+			<p id='mainTitle'>Minecraft Server Status</p>
+			<div class='row'>
+				<div class='label'>Server:</div>
+				<select id='serverSelect' onchange='checkServerStatus();'>
+					<option value='play.hypixel.net'>Hypixel</option>
+					<option value='play.cubecraft.net'>CubeCraft</option>
+					<option value='us.mineplex.com'>Mineplex</option>
+				</select>
+			</div>
+			<div class='row'>
+				<div class='label'>Status:</div>
+				<div class='value' id='statusResult'>Checking...</div>
+			</div>
+			<div class='row'>
+				<div class='label'>Players:</div>
+				<div class='value' id='playersResult'>--</div>
+			</div>
+		</div>
+		<div id='timestamp'></div>
 
 		<script>
+			function updateTimestamp() {
+				var timestamp = document.getElementById('timestamp');
+				var now = new Date();
+				timestamp.textContent = 'Updated: ' + now.toLocaleString();
+			}
+
 			function checkServerStatus() {
 				var server = document.getElementById('serverSelect').value;
 				var resultBox = document.getElementById('statusResult');
+				var playersBox = document.getElementById('playersResult');
 
 				resultBox.textContent = 'Checking...';
 				resultBox.style.color = '#666';
+				playersBox.textContent = '--';
 
 				fetch('https://api.mcsrvstat.us/3/' + encodeURIComponent(server))
 					.then(function(response) {
@@ -42,14 +104,20 @@
 						if (data && data.online) {
 							resultBox.textContent = 'Online';
 							resultBox.style.color = 'green';
+							var online = data.players && data.players.online ? data.players.online : 0;
+							var max = data.players && data.players.max ? data.players.max : 0;
+							playersBox.textContent = online + ' / ' + max;
 						} else {
 							resultBox.textContent = 'Offline';
 							resultBox.style.color = 'red';
+							playersBox.textContent = '0 / 0';
 						}
+						updateTimestamp();
 					})
 					.catch(function() {
 						resultBox.textContent = 'Unable to check status';
 						resultBox.style.color = '#b22222';
+						playersBox.textContent = '--';
 					});
 			}
 
