@@ -1,8 +1,168 @@
 <HTML>
-    <HEAD>
-    </HEAD>
-    <BODY>
-        <h1 style="text-align:center;">Alexander Buchanan</h1>
-        <p style="text-align:center;">This is a placeholder card.</p>
-    </BODY>
+<HEAD>
+<style>
+  #hangman-card {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    box-sizing: border-box;
+    text-align: center;
+    overflow: hidden;
+  }
+  #hangman-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+  }
+  #hangman-figure {
+    font-size: 11px;
+    white-space: pre;
+    line-height: 1.1;
+    font-family: monospace;
+    margin: 2px 0;
+  }
+  #hangman-word {
+    font-size: 16px;
+    letter-spacing: 3px;
+    font-family: monospace;
+    margin: 2px 0;
+  }
+  #hangman-keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px;
+    max-width: 190px;
+  }
+  #hangman-keyboard button {
+    font-size: 9px;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    cursor: pointer;
+  }
+  #hangman-keyboard button:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+  #hangman-status {
+    font-size: 11px;
+    min-height: 14px;
+    margin: 2px 0;
+  }
+  #hangman-reset {
+    font-size: 10px;
+    cursor: pointer;
+  }
+</style>
+</HEAD>
+<BODY>
+<div id="hangman-card">
+  <p id="hangman-title">Hangman</p>
+  <div id="hangman-figure"></div>
+  <div id="hangman-word"></div>
+  <div id="hangman-status"></div>
+  <div id="hangman-keyboard"></div>
+  <button id="hangman-reset" onclick="startHangman()">Play Again</button>
+</div>
+
+<script>
+  var HANGMAN_WORDS = ["denver", "hangman", "sprint", "github", "branch", "ticket", "keyboard", "internship"];
+  var MAX_WRONG = 6;
+
+  var hangmanWord = "";
+  var guessedLetters = [];
+  var wrongCount = 0;
+  var gameOver = false;
+
+  var HANGMAN_STAGES = [
+    "\n\n\n\n=====",
+    "  +--+\n  |\n  |\n  |\n=====",
+    "  +--+\n  |  |\n  |\n  |\n=====",
+    "  +--+\n  |  |\n  O  |\n  |\n=====",
+    "  +--+\n  |  |\n  O  |\n  |  |\n=====",
+    "  +--+\n  |  |\n  O  |\n /|  |\n=====",
+    "  +--+\n  |  |\n  O  |\n /|\\ |\n=====",
+    "  +--+\n  |  |\n  O  |\n /|\\ |\n /  \\====="
+  ];
+
+  function startHangman() {
+    hangmanWord = HANGMAN_WORDS[Math.floor(Math.random() * HANGMAN_WORDS.length)];
+    guessedLetters = [];
+    wrongCount = 0;
+    gameOver = false;
+    renderHangman();
+  }
+
+  function guessLetter(letter) {
+    if (gameOver || guessedLetters.indexOf(letter) !== -1) {
+      return;
+    }
+    guessedLetters.push(letter);
+    if (hangmanWord.indexOf(letter) === -1) {
+      wrongCount++;
+    }
+    checkHangmanEnd();
+    renderHangman();
+  }
+
+  function checkHangmanEnd() {
+    var allGuessed = hangmanWord.split("").every(function (ch) {
+      return guessedLetters.indexOf(ch) !== -1;
+    });
+    if (allGuessed) {
+      gameOver = true;
+    } else if (wrongCount >= MAX_WRONG) {
+      gameOver = true;
+    }
+  }
+
+  function renderHangman() {
+    var figureEl = document.getElementById("hangman-figure");
+    var wordEl = document.getElementById("hangman-word");
+    var statusEl = document.getElementById("hangman-status");
+    var keyboardEl = document.getElementById("hangman-keyboard");
+
+    figureEl.textContent = HANGMAN_STAGES[Math.min(wrongCount, MAX_WRONG)];
+
+    var display = hangmanWord.split("").map(function (ch) {
+      return guessedLetters.indexOf(ch) !== -1 ? ch : "_";
+    }).join(" ");
+    wordEl.textContent = display;
+
+    var won = hangmanWord.split("").every(function (ch) {
+      return guessedLetters.indexOf(ch) !== -1;
+    });
+
+    if (won) {
+      statusEl.textContent = "You win!";
+    } else if (wrongCount >= MAX_WRONG) {
+      statusEl.textContent = "Out of guesses: " + hangmanWord;
+    } else {
+      statusEl.textContent = "Wrong guesses: " + wrongCount + "/" + MAX_WRONG;
+    }
+
+    keyboardEl.innerHTML = "";
+    var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+    alphabet.forEach(function (letter) {
+      var btn = document.createElement("button");
+      btn.textContent = letter;
+      btn.disabled = gameOver || guessedLetters.indexOf(letter) !== -1;
+      btn.onclick = function () {
+        guessLetter(letter);
+      };
+      keyboardEl.appendChild(btn);
+    });
+  }
+
+  startHangman();
+</script>
+</BODY>
 </HTML>
